@@ -59,6 +59,7 @@ function setup()
 
   fireStereo = maximJs.maxiTools.getArrayAsVectorDbl([0,0]);
   fireMixer = new maximJs.maxiMix();
+  fireFreqMod = new maximJs.maxiOsc();
 
   splitStereo = maximJs.maxiTools.getArrayAsVectorDbl([0,0]);
   splitMixer = new maximJs.maxiMix();
@@ -79,7 +80,9 @@ function playLoop()
   var thrustSound = whiteNoise(0.5) * thrustEnv.asr(0.5, 1);
   var thrustPan = thrustMixer.stereo(thrustSound, thrustStereo, thrustPanAmount);
 
-  var fireSound = (fireOsc.sinewave(1000)+1)/2 * fireEnv.ar(0.1, 0.25);
+  var fireFreq = fireFreqMod.sinewave(8);
+  fireFreq = map(fireFreq, -1, 1, 600, 1000);
+  var fireSound = (fireOsc.sinewave(fireFreq)+1)/2 * fireEnv.ar(0.1, 0.5);
   var firePan = fireMixer.stereo(fireSound, fireStereo, 0.5);
 
   var splitSound = brownNoise(0.2) * astroidSplitEnv.ar(0.1, 0.25) * asteroidHitSize;
