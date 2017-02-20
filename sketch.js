@@ -67,6 +67,7 @@ function setup()
   shitHipStereo = maximJs.maxiTools.getArrayAsVectorDbl([0,0]);
   shitHipMixer = new maximJs.maxiMix();
   shitHipPanAmount = 0;
+  shitHipAmpMod = new maximJs.maxiOsc();
 
 
 }
@@ -85,7 +86,8 @@ function playLoop()
   var splitPan = thrustMixer.stereo(splitSound, splitStereo, splitPanAmount);
 
   var cutoff = shitHipFilSweepEnv.xLine(1000,0.001,2);
-  var shitHipSound = shitHipFil.lowpass(whiteNoise(0.75) * shitHipEnv.ar(0.1, 2), cutoff);
+  var shitHipAmp = (shitHipAmpMod.sinewave(6)+1)/2;
+  var shitHipSound = shitHipFil.lowpass(whiteNoise(0.75) * shitHipEnv.ar(0.1, 2), cutoff) * shitHipAmp;
   var shitHipPan = shitHipMixer.stereo(shitHipSound, shitHipStereo, shitHipPanAmount);
 
   // var mix = thrustSound + fireSound + splitSound + shitHipSound; 
